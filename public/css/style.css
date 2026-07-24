@@ -100,3 +100,17 @@ body {
     background-color:#fe424d !important;
     border: None !important;
 }
+
+/* show page */
+.show-img{
+    height: 60vh;   
+}
+
+.btns{
+    display:flex;
+}
+
+.show-card {
+    padding-left: 0;
+    padding-right: 0;
+}
