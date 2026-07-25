@@ -15,15 +15,14 @@
           value="<%= listing.title %>"
           type="text"
           class="form-control"
-          required
         />
         <div class="invalid-feedback">Please enter a Title</div>
       </div>
 
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" class="form-control" required>
-<%= listing.description %> </textarea
+        <textarea name="listing[description]" class="form-control">
+          <%= listing.description %> </textarea
         >
         <div class="invalid-feedback">Please enter a short Description</div>
       </div>
@@ -35,7 +34,6 @@
           value="<%= listing.image.url %>"
           type="text"
           class="form-control"
-          required
         />
         <div class="invalid-feedback">Please enter a valid link</div>
       </div>
@@ -46,9 +44,7 @@
           <input
             name="listing[price]"
             value="<%= listing.price %>"
-            type="number"
             class="form-control"
-            required
           />
           <div class="invalid-feedback">Price name should be valid</div>
         </div>
@@ -60,7 +56,6 @@
             value="<%= listing.country %>"
             type="text"
             class="form-control"
-            required
           />
           <div class="invalid-feedback">Country name should be valid</div>
         </div>
@@ -73,12 +68,11 @@
           value="<%= listing.location %>"
           type="text"
           class="form-control"
-          required
         />
         <div class="invalid-feedback">Location name should be valid</div>
       </div>
       <button class="btn btn-dark edit-btn mt-3">Edit</button>
-      <br /><br></form>
+      <br /><br />
     </form>
   </div>
 </div>
