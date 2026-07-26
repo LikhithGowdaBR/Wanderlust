@@ -3,12 +3,13 @@ const app = express();
 const port = 8080;
 const mongoose = require("mongoose");
 const path = require("path");
-const Listing = require("./models/listing");
+const Listing = require("./models/listing.js");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const { listingSchema } = require("./schema.js");
+const Review = require("./models/review.js");
 
 main()
   .then(() => {
@@ -103,6 +104,20 @@ app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
   const listing = await Listing.findById(id);
   res.render("listings/show.ejs", { listing });
+});
+
+//reviews
+//Post Route
+app.post("/listings/:id/reviews", async (req, res) => {
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  listing.reviews.push(newReview);
+
+  await newReview.save(); //to push new review
+  await listing.save(); //to change in existing doc
+
+  res.redirect(`/listings/${listing._id}`);
 });
 
 app.use((req, res, next) => {

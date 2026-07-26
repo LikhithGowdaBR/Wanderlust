@@ -9,9 +9,9 @@ const reviewSchema = new Schema({
     max: 5,
   },
   createdAt: {
-    type: Data,
+    type: Date,
     default: Date.now(),
   },
 });
 
-module.exports = require.model("Review", reviewSchema);
+module.exports = mongoose.model("Review", reviewSchema);
