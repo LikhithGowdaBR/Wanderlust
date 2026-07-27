@@ -6,11 +6,12 @@ const path = require("path");
 const Listing = require("./models/listing.js");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-const wrapAsync = require("./utils/wrapAsync.js");
+// const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
-const { listingSchema, reviewSchema } = require("./schema.js");
-const Review = require("./models/review.js");
+// const { listingSchema, reviewSchema } = require("./schema.js");
+// const Review = require("./models/review.js");
 const listings = require("./routes/listing.js");
+const reviews = require("./routes/review.js");
 
 main()
   .then(() => {
@@ -33,48 +34,12 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "/public")));
 
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
-
 app.use("/listings", listings);
+app.use("/listings/:id/reviews", reviews);
 
-//reviews
-//Post Route
-app.post(
-  "/listings/:id/reviews",
-  validateReview,
-  wrapAsync(async (req, res) => {
-    let listing = await Listing.findById(req.params.id);
-    let newReview = new Review(req.body.review);
-
-    listing.reviews.push(newReview);
-
-    await newReview.save(); //to push new review
-    await listing.save(); //to change in existing doc
-
-    res.redirect(`/listings/${listing._id}`);
-  }),
-);
-
-//Review Delete Route
-app.delete(
-  "/listings/:id/reviews/:reviewId",
-  wrapAsync(async (req, res) => {
-    let { id, reviewId } = req.params;
-
-    await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-    await Review.findByIdAndDelete(reviewId);
-
-    res.redirect(`/listings/${id}`);
-  }),
-);
+app.get("/", (req, res) => {
+  res.send("working");
+});
 
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
@@ -83,10 +48,6 @@ app.use((req, res, next) => {
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "Something went wrong" } = err;
   res.status(statusCode).render("error.ejs", { err });
-});
-
-app.get("/", (req, res) => {
-  res.send("working");
 });
 
 app.listen(port, () => {
