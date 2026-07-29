@@ -4,17 +4,22 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const ExpressError = require("../utils/ExpressError.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
-const { validateReview } = require("../middleware.js");
+const {
+  validateReview,
+  isLoggedIn,
+  isReviewAuthor,
+} = require("../middleware.js");
 
 //reviews
 //Post Route
 router.post(
   "/", // listings/:id/reviews-> /
+  isLoggedIn,
   validateReview,
   wrapAsync(async (req, res) => {
     let listing = await Listing.findById(req.params.id);
     let newReview = new Review(req.body.review);
-
+    newReview.author = req.user._id; //review author name
     listing.reviews.push(newReview);
 
     await newReview.save(); //to push new review
@@ -28,6 +33,8 @@ router.post(
 //Review Delete Route
 router.delete(
   "/:reviewId",
+  isLoggedIn,
+  isReviewAuthor,
   wrapAsync(async (req, res) => {
     let { id, reviewId } = req.params;
 
