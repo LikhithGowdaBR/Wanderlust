@@ -106,6 +106,13 @@ body {
     height: 60vh;   
 }
 
+.listing-map {
+    height: 300px;
+    width: 100%;
+    border-radius: 1rem;
+    z-index: 0;
+}
+
 .btns{
     display:flex;
 }

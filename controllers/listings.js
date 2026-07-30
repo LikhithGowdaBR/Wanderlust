@@ -1,4 +1,5 @@
 const Listing = require("../models/listing");
+const axios = require("axios");
 
 module.exports.index = async (req, res) => {
   const allListings = await Listing.find({});
@@ -23,7 +24,34 @@ module.exports.showListing = async (req, res) => {
     req.flash("error", "The listing you requested could not be found.");
     return res.redirect("/listings");
   }
-  res.render("listings/show.ejs", { listing });
+
+  let mapCoords = null;
+  try {
+    const geoRes = await axios.get(
+      "https://nominatim.openstreetmap.org/search",
+      {
+        params: {
+          q: `${listing.location}, ${listing.country}`,
+          format: "jsonv2",
+          limit: 1,
+        },
+        headers: {
+          "User-Agent": "wanderlust-app",
+        },
+      },
+    );
+
+    if (geoRes.data && geoRes.data.length > 0) {
+      mapCoords = {
+        lat: parseFloat(geoRes.data[0].lat),
+        lon: parseFloat(geoRes.data[0].lon),
+      };
+    }
+  } catch (err) {
+    console.log("Map geocoding failed:", err.message);
+  }
+
+  res.render("listings/show.ejs", { listing, mapCoords });
 };
 
 module.exports.createListing = async (req, res, next) => {

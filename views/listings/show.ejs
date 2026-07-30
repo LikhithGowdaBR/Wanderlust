@@ -16,6 +16,26 @@
         <p class="card-text"><%= listing.location %> </p>
         <p class="card-text"><%= listing.country %> </p>
 
+        <% if (mapCoords) { %>
+          <div class="map-wrapper mt-3">
+            <div id="map" class="listing-map"></div>
+          </div>
+          <script>
+            const mapCoords = <%- JSON.stringify(mapCoords) %>;
+            const title = <%- JSON.stringify(listing.title) %>;
+            const locationText = <%- JSON.stringify(listing.location + ', ' + listing.country) %>;
+            const map = L.map("map").setView([mapCoords.lat, mapCoords.lon], 13);
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            }).addTo(map);
+            L.marker([mapCoords.lat, mapCoords.lon])
+              .addTo(map)
+              .bindPopup(`<b>${title}</b><br>${locationText}`);
+          </script>
+        <% } else { %>
+          <p class="card-text text-muted mt-3">Map preview unavailable for this location.</p>
+        <% } %>
+
     </div>
   </div>
 
@@ -29,7 +49,7 @@
       >Edit</a
     >
 
-    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE ">
+    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
       <button class="btn btn-dark offset-5">Delete</button>
     </form>
   </div>
