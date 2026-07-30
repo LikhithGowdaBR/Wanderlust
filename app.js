@@ -84,9 +84,9 @@ app.use((req, res, next) => {
 //   res.send(registeredUser);
 // });
 
-app.get("/", (req, res) => {
-  res.send("working");
-});
+// app.get("/", (req, res) => {
+//   res.send("working");
+// });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);

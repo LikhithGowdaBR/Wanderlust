@@ -67,6 +67,24 @@
         />
         <div class="invalid-feedback">Location name should be valid</div>
       </div>
+
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select name="listing[category]" class="form-control">
+          <option value="Trending" <%= listing.category === 'Trending' ? 'selected' : '' %>>Trending</option>
+          <option value="Parks" <%= listing.category === 'Parks' ? 'selected' : '' %>>Parks</option>
+          <option value="Temple" <%= listing.category === 'Temple' ? 'selected' : '' %>>Temple</option>
+          <option value="Cafe" <%= listing.category === 'Cafe' ? 'selected' : '' %>>Cafe</option>
+          <option value="Restaurant" <%= listing.category === 'Restaurant' ? 'selected' : '' %>>Restaurant</option>
+          <option value="Hotel" <%= listing.category === 'Hotel' ? 'selected' : '' %>>Hotel</option>
+          <option value="Beach" <%= listing.category === 'Beach' ? 'selected' : '' %>>Beach</option>
+          <option value="Hills" <%= listing.category === 'Hills' ? 'selected' : '' %>>Hills</option>
+          <option value="Historical Place" <%= listing.category === 'Historical Place' ? 'selected' : '' %>>Historical Place</option>
+          <option value="Trekking" <%= listing.category === 'Trekking' ? 'selected' : '' %>>Trekking</option>
+          <option value="Waterfall/Lake" <%= listing.category === 'Waterfall/Lake' ? 'selected' : '' %>>Waterfall/Lake</option>
+          <option value="Other" <%= listing.category === 'Other' ? 'selected' : '' %>>Other</option>
+        </select>
+      </div>
       <button class="btn btn-dark edit-btn mt-3">Edit</button>
       <br /><br />
     </form>

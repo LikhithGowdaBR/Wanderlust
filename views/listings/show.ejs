@@ -15,6 +15,7 @@
         <p class="card-text">&#8377; <%= listing.price.toLocaleString("en-IN") %> </p>
         <p class="card-text"><%= listing.location %> </p>
         <p class="card-text"><%= listing.country %> </p>
+        <p class="card-text">Category: <a href="/listings?category=<%= encodeURIComponent(listing.category) %>" class="text-decoration-none text-dark fw-semibold"><%= listing.category %></a></p>
 
         <% if (mapCoords) { %>
           <div class="map-wrapper mt-3">

@@ -34,6 +34,25 @@ const listingSchema = new Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    enum: [
+      "Trending",
+      "Parks",
+      "Temple",
+      "Cafe",
+      "Restaurant",
+      "Hotel",
+      "Beach",
+      "Hills",
+      "Historical Place",
+      "Trekking",
+      "Waterfall/Lake",
+      "Other",
+    ],
+    default: "Other",
+    required: true,
+  },
   reviews: [
     {
       type: Schema.Types.ObjectId,

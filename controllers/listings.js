@@ -2,8 +2,13 @@ const Listing = require("../models/listing");
 const axios = require("axios");
 
 module.exports.index = async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings });
+  const { category } = req.query;
+  const filter = category ? { category } : {};
+  const allListings = await Listing.find(filter);
+  res.render("listings/index.ejs", {
+    allListings,
+    selectedCategory: category || "All",
+  });
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -63,7 +68,7 @@ module.exports.createListing = async (req, res, next) => {
   newListing.image = { url, filename };
   await newListing.save();
   req.flash("success", "New Listing Created!");
-  res.redirect("/listings");
+  res.redirect(`/listings/${newListing._id}`);
 };
 
 module.exports.renderEditForm = async (req, res) => {
