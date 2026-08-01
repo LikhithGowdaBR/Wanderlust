@@ -1,13 +1,32 @@
 const Listing = require("../models/listing");
 const axios = require("axios");
 
+const escapeRegex = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
 module.exports.index = async (req, res) => {
-  const { category } = req.query;
-  const filter = category ? { category } : {};
+  const { category, q } = req.query;
+  const searchQuery = q ? q.trim() : "";
+  const filter = {};
+
+  if (category) {
+    filter.category = category;
+  }
+
+  if (searchQuery) {
+    const terms = searchQuery.split(/\s+/).filter(Boolean);
+    filter.$and = terms.map((term) => ({
+      $or: [
+        { location: new RegExp(escapeRegex(term), "i") },
+        { country: new RegExp(escapeRegex(term), "i") },
+      ],
+    }));
+  }
+
   const allListings = await Listing.find(filter);
   res.render("listings/index.ejs", {
     allListings,
     selectedCategory: category || "All",
+    searchQuery,
   });
 };
 
