@@ -51,7 +51,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 // const store = MongoStore.create({
 //   mongoUrl: dbURL,
 //   crypto: {
-//     secret: "mysupersecretcodes",
+//     secret: "",
 //   },
 //   touchAfter: 24 * 3600,
 // });
@@ -62,7 +62,7 @@ app.use(express.static(path.join(__dirname, "/public")));
 
 const sessionOptions = {
   // store,
-  secret: "mysupersecretcodes",
+  secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
